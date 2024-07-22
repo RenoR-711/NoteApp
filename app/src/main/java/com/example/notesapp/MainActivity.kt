@@ -15,14 +15,14 @@ class MainActivity : AppCompatActivity() {
     //endregion
     lateinit var noteViewModel: NoteViewModel
 
-    //region 2. Lebenszyklus
+    //region 2. life cycle
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        // 1. Binding Object erstellen (Inflate activity main)
+
         binding = ActivityMainBinding.inflate(layoutInflater)
-        //2. Root Elemente festlegen
-        //3. Setzen des Hauptelementes
+        //2. Set root elements
+        //3. Setting the main element
         // setting the content view of your activity or fragment to be the root view
         setContentView(binding.root)
         //instance of ViewModelProvider and obtaining the desired ViewModel using this provider
@@ -30,8 +30,6 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun setupViewModel(){
-        //Initialize Repository with a database instance
-        //The "this" keyword refers to the current context
         val noteRepository = NoteRepository(NoteDatabase(this))
 
         val viewModelProviderFactory = NoteViewModelFactory(application, noteRepository)

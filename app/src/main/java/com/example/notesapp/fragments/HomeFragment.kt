@@ -35,14 +35,6 @@ class HomeFragment : Fragment(R.layout.fragment_home),
     private lateinit var notesViewModel : NoteViewModel
     private lateinit var noteAdapter: NoteAdapter
 
-    /**
-     * On create view
-     *
-     * @param inflater
-     * @param container
-     * @param savedInstanceState
-     * @return
-     */
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -52,12 +44,6 @@ class HomeFragment : Fragment(R.layout.fragment_home),
         return binding.root
     }
 
-    /**
-     * On view created
-     *
-     * @param view
-     * @param savedInstanceState
-     */
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
@@ -71,11 +57,6 @@ class HomeFragment : Fragment(R.layout.fragment_home),
         }
     }
 
-    /**
-     * Update u i
-     *
-     * @param note
-     */
     private fun updateUI(note: List<Note>){
         if (note.isNotEmpty()){
         binding.emptyNotesImage.visibility = View.GONE
@@ -86,10 +67,6 @@ class HomeFragment : Fragment(R.layout.fragment_home),
     }
     }
 
-    /**
-     * Setup home recycler view
-     *
-     */
     private fun setupHomeRecyclerView() {
         noteAdapter = NoteAdapter()
         binding.homeRecyclerView.apply {
@@ -105,11 +82,6 @@ class HomeFragment : Fragment(R.layout.fragment_home),
         }
     }
 
-    /**
-     * Search note
-     *
-     * @param query
-     */
     private fun searchNote(query: String?) {
         val searchQuery = "%$query"
 
@@ -119,12 +91,6 @@ class HomeFragment : Fragment(R.layout.fragment_home),
         }
     }
 
-    /**
-     * On query text submit
-     *
-     * @param query
-     * @return
-     */
     override fun onQueryTextSubmit(query: String?): Boolean {
         return false
     }
