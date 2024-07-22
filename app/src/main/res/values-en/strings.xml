@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">NotesApp</string>
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="add_note">add note</string>
+    <string name="enter_the_title">add title</string>
+    <string name="enter_the_description">Enter the description</string>
+    <string name="edit_note">edit note</string>
+    <string name="enter_the_title1">add title</string>
+    <string name="enter_the_description1">Enter the description</string>
+    <string name="note_title">Note title</string>
+    <string name="description">description</string>
+</resources>
