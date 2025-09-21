@@ -20,7 +20,7 @@ Eine einfache Notiz-App, entwickelt in Kotlin im Rahmen einer Weiterbildung. Mit
 
 <ol>
 <li>Klone das Repository:</li>
-git clone <https://github.com/dein-benutzername/noteapp.git>
+git clone https://github.com/RenoR-711/NoteApp.git
 
 <li>Öffne das Projekt in Android Studio.</li>
 <li>Baue das Projekt und starte die App auf einem Emulator oder einem Android-Gerät.</li>
