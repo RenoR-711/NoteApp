@@ -1,16 +1,11 @@
 package com.example.notesapp.fragments
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
-import android.view.Menu
-import android.view.MenuInflater
-import android.view.MenuItem
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import android.widget.Toast
 import androidx.core.view.MenuHost
 import androidx.core.view.MenuProvider
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.Lifecycle
 import androidx.navigation.findNavController
 import com.example.notesapp.MainActivity
@@ -19,61 +14,72 @@ import com.example.notesapp.databinding.FragmentAddNoteBinding
 import com.example.notesapp.model.Note
 import com.example.notesapp.viewmodel.NoteViewModel
 
-class AddNoteFragment : Fragment(R.layout.fragment_add_note),MenuProvider {
-    private var addNoteBinding: FragmentAddNoteBinding?  = null
-    private val binding get() = addNoteBinding!!
+class AddNoteFragment : Fragment(R.layout.fragment_add_note), MenuProvider {
+
+    private var _binding: FragmentAddNoteBinding? = null
+    private val binding get() = _binding!!
 
     private lateinit var notesViewModel: NoteViewModel
-    private lateinit var addNoteView: View
+    private lateinit var rootView: View
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        // Inflate the layout for this fragment
-        addNoteBinding = FragmentAddNoteBinding.inflate(inflater,container,false)
+    ): View {
+        _binding = FragmentAddNoteBinding.inflate(inflater, container, false)
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        rootView = view
+
+        // MenuHost einrichten, damit Fragment Menüs bereitstellen kann
         val menuHost: MenuHost = requireActivity()
         menuHost.addMenuProvider(this, viewLifecycleOwner, Lifecycle.State.RESUMED)
+
+        // ViewModel vom MainActivity holen
         notesViewModel = (activity as MainActivity).noteViewModel
-        addNoteView = view
     }
-    private fun saveNote(view: View){
+
+    private fun saveNote() {
         val noteTitle = binding.addNoteTitle.text.toString().trim()
-        val noteDesc = binding.addNoteDesc.text.toString().trim()
+        val noteContent = binding.addNoteContent.text.toString().trim()
 
-        if (noteTitle.isNotEmpty()){
-            val note = Note(0, noteTitle, noteDesc)
-            notesViewModel.addNote(note)
-
-            Toast.makeText(addNoteView.context, "Notiz Gespeichert", Toast.LENGTH_SHORT).show()
-            view.findNavController().popBackStack(R.id.homeFragment, false)
-        }else{
-            Toast.makeText(addNoteView.context, "Geben Sie den Titel ein", Toast.LENGTH_SHORT).show()
+        if (noteTitle.isEmpty() || noteContent.isEmpty()) {
+            Toast.makeText(requireContext(), "Please fill in all fields", Toast.LENGTH_SHORT).show()
+            return
         }
+
+        val note = Note(
+            title = noteTitle,
+            content = noteContent
+        )
+
+        notesViewModel.insertNote(note)
+        Toast.makeText(requireContext(), "Note saved!", Toast.LENGTH_SHORT).show()
+
+        // Zurück zum NotesFragment navigieren
+        rootView.findNavController().navigate(R.id.action_addNoteFragment_to_notesFragment)
     }
 
     override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
-        menu.clear()
-        menuInflater.inflate(R.menu.menu_add_note, menu)
+        menuInflater.inflate(R.menu.add_note_menu, menu)
     }
 
     override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
-        return when(menuItem.itemId){
-            R.id.saveMenu -> {
-                saveNote(addNoteView)
+        return when (menuItem.itemId) {
+            R.id.save_note -> {
+                saveNote()
                 true
-            }else -> false
+            }
+            else -> false
         }
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
-        addNoteBinding = null
+    override fun onDestroyView() { // setzt _bindung auf null zur Vermeidung von Memory Leaks
+        super.onDestroyView()
+        _binding = null
     }
 }

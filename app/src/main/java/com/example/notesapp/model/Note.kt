@@ -9,7 +9,8 @@ import kotlinx.parcelize.Parcelize
 @Parcelize
 data class Note(
     @PrimaryKey(autoGenerate = true)
-    val id: Int,
+    val id: Int = 0,         // Standardwert für Room (autoGenerate)
     val noteTitle: String,
     val noteDesc: String
-):Parcelable
+) : Parcelable
+
