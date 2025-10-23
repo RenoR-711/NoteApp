@@ -1,4 +1,3 @@
-// Top-level build.gradle.kts
 buildscript {
     repositories {
         google()
@@ -7,8 +6,8 @@ buildscript {
 }
 
 plugins {
-    id("com.android.application") version "8.11.2" apply false
-    id("org.jetbrains.kotlin.android") version "1.9.0" apply false
-    id("androidx.navigation.safeargs") version "2.7.7" apply false
-    id("com.google.devtools.ksp") version "1.9.0-1.0.13" apply false
+    alias(libs.plugins.androidApplication) apply false
+    alias(libs.plugins.jetbrainsKotlinAndroid) apply false
+    alias(libs.plugins.navigationSafeArgs) apply false
+    alias(libs.plugins.ksp) apply false
 }
