@@ -14,10 +14,10 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        // Datenbank-Instanz korrekt bekommen (Room-Datenbank korrekt holen)
-        val db = NoteDatabase.getInstance(this)
-        val repository = NoteRepository(db)
-        noteViewModel = NoteViewModel(repository)
+        val navHostFragment = supportFragmentManager
+            .findFragmentById(R.id.navHostFragment) as NavHostFragment
+        val navController = navHostFragment.navController
 
+        // optional: BottomNavigationView oder Toolbar einbinden
     }
 }

@@ -1,26 +1,22 @@
-package com.example.notesapp.repository
+package com.example.notesapp.model
 
-import com.example.notesapp.database.NoteDatabase
-import com.example.notesapp.model.Note
-import kotlinx.coroutines.flow.Flow
-
+import androidx.lifecycle.LiveData
 
 /**
  * Repository-Schicht:
  * Vermittelt zwischen ViewModel und Room-Datenbank.
  * Kapselt Datenzugriffe und sorgt für klare Trennung von UI-Logik.
  */
-class NoteRepository(private val db: NoteDatabase) {
+class NoteRepository(private val dao: NoteDao) {
 
-    fun getAllNotes() = db.getNoteDao().getAllNotes()
+    val allNotes: LiveData<List<Note>> = dao.getAllNotes()
 
     // --- CRUD ---
-    suspend fun insertNote(note: Note) = db.getNoteDao().insertNote(note)
-
-    suspend fun updateNote(note: Note) = db.getNoteDao().updateNote(note)
-
-    suspend fun deleteNote(note: Note) = db.getNoteDao().deleteNote(note)
+    suspend fun insert(note: Note) = dao.insert(note)
+    suspend fun update(note: Note) = dao.update(note)
+    suspend fun delete(note: Note) = dao.delete(note)
 
     // --- Leseoperationen, Queries --
-    fun searchNotes(query: String) = db.getNoteDao().searchNotes(query)
+    fun searchNote(query: String): LiveData<List<Note>> = dao.searchNote(query)
 }
+

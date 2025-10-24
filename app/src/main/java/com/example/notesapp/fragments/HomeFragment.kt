@@ -43,11 +43,33 @@ class HomeFragment : Fragment(R.layout.fragment_home),
         notesViewModel = (activity as MainActivity).noteViewModel
 
         setupHomeRecyclerView()
-        observeNotes()
 
         // FAB für neue Notiz
         binding.addNoteFab.setOnClickListener {
             it.findNavController().navigate(R.id.action_homeFragment_to_addNoteFragment)
+        }
+    }
+
+    private fun setupHomeRecyclerView() {
+        noteAdapter = NoteAdapter().apply {
+            onItemClick = { selectedNote ->
+                // Navigation mit Safe Args
+                val action = HomeFragmentDirections
+                    .actionHomeFragmentToUpdateNoteFragment(selectedNote)
+                binding.root.findNavController().navigate(action)
+            }
+        }
+
+        binding.homeRecyclerView.apply {
+            layoutManager = StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
+            setHasFixedSize(true)
+            adapter = noteAdapter
+        }
+
+        // Observer für Notes
+        notesViewModel.getAllNotes().observe(viewLifecycleOwner) { notes ->
+            noteAdapter.differ.submitList(notes)
+            updateUI(notes)
         }
     }
 
@@ -58,29 +80,6 @@ class HomeFragment : Fragment(R.layout.fragment_home),
         } else {
             binding.emptyNotesImage.visibility = View.VISIBLE
             binding.homeRecyclerView.visibility = View.GONE
-        }
-    }
-
-    private fun setupHomeRecyclerView() {
-        // Adapter mit ClickListener
-        noteAdapter = NoteAdapter { selectedNote ->
-            // Navigation zu UpdateNoteFragment mit Safe Args
-            val action = HomeFragmentDirections
-                .actionHomeFragmentToUpdateNoteFragment(selectedNote)
-            binding.root.findNavController().navigate(action)
-        }
-
-        binding.homeRecyclerView.apply {
-            layoutManager = StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
-            setHasFixedSize(true)
-            adapter = noteAdapter
-        }
-    }
-
-    private fun observeNotes() {
-        notesViewModel.allNotes.observe(viewLifecycleOwner) { notes ->
-            noteAdapter.differ.submitList(notes)
-            updateUI(notes)
         }
     }
 

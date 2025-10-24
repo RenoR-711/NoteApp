@@ -12,6 +12,7 @@
     <string name="description">Beschreibung.</string>
     <string name="loading_text">Lädt...</string>
     <string name="edit_fab">edit_fab</string>
+    <string name="update_note">update_note</string>
     <!-- Strings used for fragments for navigation -->
 <!--    <string name="first_fragment_label">First Fragment</string>-->
 <!--    <string name="second_fragment_label">Second Fragment</string>-->

@@ -1,50 +1,48 @@
 package com.example.notesapp.adapter
 
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
-import androidx.navigation.findNavController
+import android.widget.TextView
 import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
-import com.example.notesapp.databinding.NoteLayoutBinding
-import com.example.notesapp.fragments.HomeFragmentDirections
+import com.example.notesapp.R
 import com.example.notesapp.model.Note
 
-class NoteAdapter(
-    private val onItemClick: (Note) -> Unit
-) : RecyclerView.Adapter<NoteAdapter.NoteViewHolder>() {
+class NoteAdapter : RecyclerView.Adapter<NoteAdapter.NoteViewHolder>() {
 
-    private val notes = List<Note>()
+    inner class NoteViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
 
-    inner class NoteViewHolder(val binding: ItemNoteBinding) : RecyclerView.ViewHolder(binding.root) {
-        fun bind(note: Note) {
-            binding.titleText.text = note.noteTitle
-            binding.descText.text = note.noteDesc
+    private val differCallback = object : DiffUtil.ItemCallback<Note>() {
+        override fun areItemsTheSame(oldItem: Note, newItem: Note): Boolean {
+            return oldItem.id == newItem.id
+        }
 
-            binding.root.setOnClickListener {
-                onItemClick(note) // klick Event weitergeben
-            }
+        override fun areContentsTheSame(oldItem: Note, newItem: Note): Boolean {
+            return oldItem == newItem
         }
     }
 
+    val differ = AsyncListDiffer(this, differCallback)
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): NoteViewHolder {
-        val binding = ItemNoteBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-        return NoteViewHolder(binding)
+        val view = LayoutInflater.from(parent.context).inflate(R.layout.item_note, parent, false)
+        return NoteViewHolder(view)
     }
 
     override fun onBindViewHolder(holder: NoteViewHolder, position: Int) {
-        val currentNote = notes[position]
-        holder.binding.noteTitle.text = currentNote.noteTitle
-        holder.binding.noteDesc.text = currentNote.noteDesc
+        val note = differ.currentList[position]
+
+        // Beispiel: Text setzen
+        holder.itemView.findViewById<TextView>(R.id.noteTitle).text = note.noteTitle
+
+        // **Hier kommt der Klicklistener hin**
+        holder.itemView.setOnClickListener {
+            onItemClick?.invoke(note)
+        }
     }
 
-    override fun getItemCount() = notes.size
-
-    fun setNotes(list: List<Note>) {
-        notes.clear()
-        notes.addAll(list)
-        notifyDataSetChanged()
-    }
+    override fun getItemCount(): Int = differ.currentList.size
+    var onItemClick: ((Note) -> Unit)? = null
 }
-
-annotation class ItemNoteBinding

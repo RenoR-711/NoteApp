@@ -1,12 +1,15 @@
 package com.example.notesapp.viewmodel
 
-import androidx.lifecycle.ViewModel
+import android.app.Application
+import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.viewModelScope
+import com.example.notesapp.database.NoteDatabase
 import com.example.notesapp.model.Note
+import com.example.notesapp.model.NoteDatabase
+import com.example.notesapp.model.NoteRepository
 import com.example.notesapp.repository.NoteRepository
-import kotlinx.coroutines.flow.SharingStarted
-import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 /**
@@ -14,22 +17,32 @@ import kotlinx.coroutines.launch
  * Vermittelt zwischen UI (Activity/Fragment) und Repository.
  * Führt Datenoperationen in Coroutines aus (asynchron, thread-sicher).
  */
-class NoteViewModel(private val repository: NoteRepository) : ViewModel() {
+class NoteViewModel(application: Application) : AndroidViewModel(application) {
 
-    fun getAllNotes() = repository.getAllNotes()
+    private val repository: NoteRepository
+    val allNotes: LiveData<List<Note>>
+
+    init {
+        val dao = NoteDatabase.getDatabase(application).noteDao()
+        repository = NoteRepository(dao)
+        allNotes = repository.allNotes
+    }
 
     // --- Schreiboperationen (CRUD) ---
-    fun insertNote(note: Note) = viewModelScope.launch {
-        repository.insertNote(note)
+    fun insert(note: Note) = viewModelScope.launch(Dispatchers.IO) {
+        repository.insert(note)
     }
 
-    fun updateNote(note: Note) = viewModelScope.launch {
-        repository.updateNote(note)
+    fun update(note: Note) = viewModelScope.launch(Dispatchers.IO) {
+        repository.update(note)
     }
 
-    fun deleteNote(note: Note) = viewModelScope.launch {
-        repository.deleteNote(note)
+    fun delete(note: Note) = viewModelScope.launch(Dispatchers.IO) {
+        repository.delete(note)
     }
 
-    fun searchNote(query: String) = repository.searchNotes(query)
+    fun searchNote(query: String): LiveData<List<Note>> {
+        return repository.searchNote(query)
+    }
 }
+

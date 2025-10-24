@@ -1,27 +1,24 @@
-package com.example.notesapp.database
+package com.example.notesapp.model
 
 import androidx.lifecycle.LiveData
 import androidx.room.*
-import com.example.notesapp.model.Note
-import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface NoteDao {
 
-
-    @Query("SELECT * FROM note ORDER BY id DESC")
-    fun getAllNotes(): LiveData<List<Note>>
-
+    // --- CRUD Operation ---
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertNote(note: Note)
+    suspend fun insert(note: Note)
 
     @Update
-    suspend fun updateNote(note: Note)
+    suspend fun update(note: Note)
 
     @Delete
-    suspend fun deleteNote(note: Note)
-
-    // 🔍 Suche nach Titel oder Inhalt
-    @Query("SELECT * FROM note WHERE noteTitle LIKE :query OR noteDesc LIKE :query ORDER BY id DESC")
-    fun searchNotes(query: String): LiveData<List<Note>>
+    suspend fun delete(note: Note)
+    // gibt alle Notizen zurück
+    @Query("SELECT * FROM notes ORDER BY id DESC")
+    fun getAllNotes(): LiveData<List<Note>>
+    //sucht nach Titeln oder Beschreibungen
+    @Query("SELECT * FROM notes WHERE noteTitle LIKE :query OR noteDesc LIKE :query")
+    fun searchNote(query: String): LiveData<List<Note>>
 }
