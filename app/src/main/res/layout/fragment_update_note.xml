@@ -1,43 +1,76 @@
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="12dp">
+    android:padding="16dp"
+    tools:context=".fragments.UpdateNoteFragment">
 
+    <!-- Überschrift -->
+    <TextView
+        android:id="@+id/updateNoteHeading"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/edit_note"
+        android:textStyle="bold"
+        android:textSize="24sp"
+        android:textColor="@color/black"
+        android:fontFamily="monospace" />
+
+    <!-- Titel -->
     <EditText
         android:id="@+id/updateNoteTitle"
         android:layout_width="match_parent"
         android:layout_height="60dp"
+        android:layout_below="@id/updateNoteHeading"
+        android:layout_marginTop="16dp"
         android:hint="@string/enter_the_title1"
         android:padding="12dp"
-        android:textSize="20sp"
+        android:textColor="@color/black"
+        android:textSize="18sp"
         android:background="@drawable/note_border"
-        android:maxLines="1"
-        android:layout_marginTop="16dp"
-        android:fontFamily="monospace" />
+        android:maxLines="1" />
 
+    <!-- Beschreibung -->
     <EditText
         android:id="@+id/updateNoteDesc"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:hint="@string/enter_the_description1"
-        android:padding="12dp"
-        android:textSize="18sp"
         android:layout_below="@id/updateNoteTitle"
         android:layout_marginTop="12dp"
+        android:layout_above="@id/updateNoteFab"
         android:gravity="top"
-        android:background="@drawable/note_border"
-        android:fontFamily="monospace" />
+        android:hint="@string/enter_the_description1"
+        android:padding="12dp"
+        android:textColor="@color/black"
+        android:textSize="16sp"
+        android:background="@drawable/note_border" />
 
+    <!-- FAB: Notiz aktualisieren -->
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/updateNoteFab"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_alignParentEnd="true"
-        android:layout_margin="16dp"
-        android:src="@drawable/baseline_done_24"
-        android:contentDescription="@string/update_note" />
+        android:layout_margin="20dp"
+        android:contentDescription="@string/save_note"
+        app:backgroundTint="@color/shadow"
+        app:tint="@android:color/white"
+        app:srcCompat="@drawable/baseline_done_24" />
+
+    <!-- FAB: Notiz löschen -->
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/deleteNoteFab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentStart="true"
+        android:layout_margin="20dp"
+        android:contentDescription="@string/delete_note"
+        app:backgroundTint="@color/shadow"
+        app:tint="@android:color/white"
+        app:srcCompat="@drawable/baseline_delete_24" />
 
 </RelativeLayout>

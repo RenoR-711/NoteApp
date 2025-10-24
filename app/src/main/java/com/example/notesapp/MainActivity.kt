@@ -2,8 +2,12 @@ package com.example.notesapp
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import androidx.navigation.fragment.NavHostFragment
+import androidx.navigation.findNavController
+import androidx.navigation.ui.setupActionBarWithNavController
+import com.example.notesapp.database.NoteDatabase
+import com.example.notesapp.model.NoteRepository
 import com.example.notesapp.viewmodel.NoteViewModel
+import com.example.notesapp.viewmodel.NoteViewModelFactory
 
 class MainActivity : AppCompatActivity() {
 
@@ -13,10 +17,17 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        val navHostFragment = supportFragmentManager
-            .findFragmentById(R.id.navHostFragment) as NavHostFragment
-        val navController = navHostFragment.navController
+        val dao = NoteDatabase.getDatabase(this).noteDao()
+        val repository = NoteRepository(dao)
+        val factory = NoteViewModelFactory(repository)
+        noteViewModel = factory.create(NoteViewModel::class.java)
 
-        // optional: BottomNavigationView oder Toolbar einbinden
+        val navController = findNavController(R.id.navHostFragment)
+        setupActionBarWithNavController(navController)
+    }
+
+    override fun onSupportNavigateUp(): Boolean {
+        val navController = findNavController(R.id.navHostFragment)
+        return navController.navigateUp() || super.onSupportNavigateUp()
     }
 }
