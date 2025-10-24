@@ -14,18 +14,17 @@ abstract class NoteDatabase : RoomDatabase() {
     companion object {
         @Volatile
         private var INSTANCE: NoteDatabase? = null
-        private val LOCK = Any()
 
-        operator fun invoke(context: Context): NoteDatabase =
-            INSTANCE ?: synchronized(LOCK) {
-                INSTANCE ?: createDatabase(context).also { INSTANCE = it }
+        fun getDatabase(context: Context): NoteDatabase =
+            INSTANCE ?: synchronized(this) {
+                INSTANCE ?: buildDatabase(context).also { INSTANCE = it }
             }
 
-        private fun createDatabase(context: Context) =
+        private fun buildDatabase(context: Context) =
             Room.databaseBuilder(
                 context.applicationContext,
                 NoteDatabase::class.java,
-                "note_db"
+                "note_database"
             ).build()
     }
 }
