@@ -2,27 +2,19 @@ package com.example.notesapp
 
 import android.content.Intent
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.lifecycleScope
-import com.example.notesapp.databinding.ActivitySplashBinding
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
 
 class SplashActivity : AppCompatActivity() {
-    //region 1 Lebenszyklus
-
-    private lateinit var binding: ActivitySplashBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        // Inflate activity main
-        binding = ActivitySplashBinding.inflate(layoutInflater)
-        setContentView(binding.root) //1. Set layout
 
-        lifecycleScope.launch {
-            delay(3000)
-            startActivity(Intent(this@SplashActivity, MainActivity::class.java))//start new activity
-            finish()
-        }
+        // Nach 2 Sekunden zu MainActivity wechseln
+        Handler(Looper.getMainLooper()).postDelayed({
+            startActivity(Intent(this, MainActivity::class.java))
+            finish() // SplashActivity schließen
+        }, 2000)
     }
 }

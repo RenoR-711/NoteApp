@@ -9,10 +9,12 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
+import com.example.notesapp.MainActivity
 import com.example.notesapp.R
 import com.example.notesapp.adapter.NoteAdapter
 import com.example.notesapp.database.NoteDatabase
 import com.example.notesapp.databinding.FragmentHomeBinding
+import com.example.notesapp.model.Note
 import com.example.notesapp.model.NoteRepository
 import com.example.notesapp.viewmodel.NoteViewModel
 import com.example.notesapp.viewmodel.NoteViewModelFactory
@@ -23,21 +25,22 @@ class HomeFragment : Fragment(R.layout.fragment_home),
     private var _binding: FragmentHomeBinding? = null
     private val binding get() = _binding!!
 
-    private lateinit var notesViewModel: NoteViewModel
     private lateinit var noteAdapter: NoteAdapter
+    private lateinit var noteViewModel: NoteViewModel
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
+        inflater: android.view.LayoutInflater,
+        container: android.view.ViewGroup?,
         savedInstanceState: Bundle?
-    ): View {
+    ): android.view.View {
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
         return binding.root
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+    override fun onViewCreated(view: android.view.View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-// Menü einrichten
+        // Menü einrichten
         val menuHost: MenuHost = requireActivity()
         menuHost.addMenuProvider(this, viewLifecycleOwner, Lifecycle.State.RESUMED)
 
@@ -47,23 +50,21 @@ class HomeFragment : Fragment(R.layout.fragment_home),
         val factory = NoteViewModelFactory(repository)
         noteViewModel = ViewModelProvider(this, factory)[NoteViewModel::class.java]
 
-        // --- RecyclerView einrichten ---
-        setupRecyclerView()
+        setupHomeRecyclerView()
+        observeNotes()
 
-        // --- FloatingActionButton für neue Notiz ---
+        // FAB für neue Notiz
         binding.addNoteFab.setOnClickListener {
             it.findNavController().navigate(R.id.action_homeFragment_to_addNoteFragment)
         }
-
-        // --- Observer ---
-        observeNotes()
     }
 
-    private fun setupRecyclerView() {
+    private fun setupHomeRecyclerView() {
         noteAdapter = NoteAdapter().apply {
             onItemClick = { selectedNote ->
-                // SafeArgs Navigation zur UpdateNoteFragment
-                val action = HomeFragmentDirections.actionHomeFragmentToUpdateNoteFragment(selectedNote)
+                // Navigation zu UpdateNoteFragment mit Safe Args
+                val action = HomeFragmentDirections
+                    .actionHomeFragmentToUpdateNoteFragment(selectedNote)
                 binding.root.findNavController().navigate(action)
             }
         }
@@ -82,13 +83,13 @@ class HomeFragment : Fragment(R.layout.fragment_home),
         }
     }
 
-    private fun updateUI(notes: List<com.example.notesapp.model.Note>) {
+    private fun updateUI(notes: List<Note>) {
         if (notes.isNotEmpty()) {
-            binding.emptyNotesImage.visibility = View.GONE
-            binding.homeRecyclerView.visibility = View.VISIBLE
+            binding.emptyNotesImage.visibility = android.view.View.GONE
+            binding.homeRecyclerView.visibility = android.view.View.VISIBLE
         } else {
-            binding.emptyNotesImage.visibility = View.VISIBLE
-            binding.homeRecyclerView.visibility = View.GONE
+            binding.emptyNotesImage.visibility = android.view.View.VISIBLE
+            binding.homeRecyclerView.visibility = android.view.View.GONE
         }
     }
 

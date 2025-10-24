@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Standard App-Theme -->
+    <style name="Theme.NotesApp" parent="Theme.AppCompat.Light.DarkActionBar">
+        <item name="colorPrimary">@color/mist</item>
+        <item name="colorPrimaryDark">@color/autumnfoliage</item>
+        <item name="colorAccent">@color/stone</item>
+    </style>
+
+    <!-- Splash-Theme -->
+    <style name="Theme.NotesApp.Splash" parent="Theme.AppCompat.Light.NoActionBar">
+        <!-- Setze das Bild als Fenster-Hintergrund -->
+        <item name="android:windowBackground">@drawable/emptybkg</item>
+    </style>
+</resources>
