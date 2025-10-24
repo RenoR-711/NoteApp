@@ -12,7 +12,7 @@ Eine einfache Notiz-App, entwickelt in Kotlin im Rahmen einer Weiterbildung. Mit
 ## Technologie-Stack
 
 - Programmiersprache: Kotlin
-- Plattform: Android
+- Plattform: Android Studio
 - Architektur: MVVM (optional, je nachdem ob du das genutzt hast)
 - Speicherung: SQLite / Room (oder SharedPreferences, je nach Implementierung)
 
