@@ -12,8 +12,10 @@ class NoteViewModelFactory(
     private val repository: NoteRepository
 ) : ViewModelProvider.Factory {
 
+    @Suppress("UNCHECKED_CAST")
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         if (modelClass.isAssignableFrom(NoteViewModel::class.java)) {
+
             // Repository ins ViewModel injizieren
             return NoteViewModel(repository) as T
         }

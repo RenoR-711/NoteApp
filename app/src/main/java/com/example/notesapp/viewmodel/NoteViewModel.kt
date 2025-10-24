@@ -9,15 +9,15 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 /**
- * ViewModel-Schicht:
- * Vermittelt zwischen UI (Activity/Fragment) und Repository.
- * Führt Datenoperationen in Coroutines aus (asynchron, thread-sicher).
+ * ViewModel-Schicht: Vermittelt zwischen UI (Fragment/Activity) und Repository.
+ * Führt alle Datenoperationen asynchron mit Coroutines aus.
  */
 class NoteViewModel(private val repository: NoteRepository) : ViewModel() {
 
+    // Alle Notizen als LiveData
     val allNotes: LiveData<List<Note>> = repository.allNotes
 
-    // --- Schreiboperationen (CRUD) ---
+    // --- CRUD Operationen ---
     fun insert(note: Note) = viewModelScope.launch(Dispatchers.IO) {
         repository.insert(note)
     }
@@ -30,6 +30,7 @@ class NoteViewModel(private val repository: NoteRepository) : ViewModel() {
         repository.delete(note)
     }
 
+    // Suche nach Notizen
     fun searchNote(query: String): LiveData<List<Note>> {
         return repository.searchNote(query)
     }

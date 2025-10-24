@@ -1,65 +1,53 @@
 package com.example.notesapp.fragments
 
 import android.os.Bundle
-import android.view.*
+import android.view.View
 import androidx.fragment.app.Fragment
-import androidx.navigation.fragment.findNavController
-import androidx.navigation.fragment.navArgs
-import com.example.notesapp.MainActivity
+import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.findNavController
 import com.example.notesapp.R
+import com.example.notesapp.database.NoteDatabase
 import com.example.notesapp.databinding.FragmentUpdateNoteBinding
-import com.example.notesapp.model.Note
+import com.example.notesapp.model.NoteRepository
 import com.example.notesapp.viewmodel.NoteViewModel
-import com.google.android.material.snackbar.Snackbar
+import com.example.notesapp.viewmodel.NoteViewModelFactory
 
 class UpdateNoteFragment : Fragment(R.layout.fragment_update_note) {
 
     private var _binding: FragmentUpdateNoteBinding? = null
     private val binding get() = _binding!!
 
-    private lateinit var notesViewModel: NoteViewModel
-    private val args: UpdateNoteFragmentArgs by navArgs() // <- Safe Args für die Note
-
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        _binding = FragmentUpdateNoteBinding.inflate(inflater, container, false)
-        return binding.root
-    }
+    private lateinit var noteViewModel: NoteViewModel
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        _binding = FragmentUpdateNoteBinding.bind(view)
 
-        // ViewModel holen
-        notesViewModel = (activity as MainActivity).noteViewModel
+        // --- ViewModel ---
+        val dao = NoteDatabase.getDatabase(requireContext()).noteDao()
+        val repository = NoteRepository(dao)
+        val factory = NoteViewModelFactory(repository)
+        noteViewModel = ViewModelProvider(this, factory)[NoteViewModel::class.java]
 
-        // Alte Notizdaten anzeigen
-        val note = args.note
+        // --- Alte Note anzeigen ---
+        val note = UpdateNoteFragmentArgs.fromBundle(requireArguments()).note
         binding.updateNoteTitle.setText(note.noteTitle)
         binding.updateNoteDesc.setText(note.noteDesc)
 
-        // Update-Button
+        // --- Update Button ---
         binding.updateNoteFab.setOnClickListener {
-            val title = binding.updateNoteTitle.text.toString().trim()
-            val desc = binding.updateNoteDesc.text.toString().trim()
-
-            if (title.isNotEmpty()) {
-                val updatedNote = Note(note.id, title, desc)
-                notesViewModel.update(updatedNote)
-
-                Snackbar.make(view, "Note updated successfully", Snackbar.LENGTH_SHORT).show()
-                findNavController().navigate(R.id.action_updateNoteFragment_to_homeFragment)
-            } else {
-                Snackbar.make(view, "Title cannot be empty", Snackbar.LENGTH_SHORT).show()
-            }
+            val updatedNote = note.copy(
+                noteTitle = binding.updateNoteTitle.text.toString(),
+                noteDesc = binding.updateNoteDesc.text.toString()
+            )
+            noteViewModel.update(updatedNote)
+            view.findNavController().navigate(R.id.action_updateNoteFragment_to_homeFragment)
         }
 
-        // Delete-Button
+        // --- Delete Button ---
         binding.deleteNoteFab.setOnClickListener {
-            notesViewModel.delete(note)
-            Snackbar.make(view, "Note deleted", Snackbar.LENGTH_SHORT).show()
-            findNavController().navigate(R.id.action_updateNoteFragment_to_homeFragment)
+            noteViewModel.delete(note)
+            view.findNavController().navigate(R.id.action_updateNoteFragment_to_homeFragment)
         }
     }
 

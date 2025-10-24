@@ -39,12 +39,13 @@
     <fragment
         android:id="@+id/updateNoteFragment"
         android:name="com.example.notesapp.fragments.UpdateNoteFragment"
-        android:label="Update Note"
-        tools:layout="@layout/fragment_update_note">
+        android:label="Update Note">
 
         <argument
             android:name="note"
             app:argType="com.example.notesapp.model.Note" />
+
+        <!-- Action zurück zu HomeFragment -->
         <action
             android:id="@+id/action_updateNoteFragment_to_homeFragment"
             app:destination="@id/homeFragment" />
