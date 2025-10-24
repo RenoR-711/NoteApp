@@ -1,6 +1,7 @@
 package com.example.notesapp.model
 
 import androidx.lifecycle.LiveData
+import com.example.notesapp.database.NoteDao
 
 /**
  * Repository-Schicht:

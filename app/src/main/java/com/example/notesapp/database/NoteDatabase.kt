@@ -1,5 +1,6 @@
-package com.example.notesapp.model
+package com.example.notesapp.database
 
+import com.example.notesapp.model.Note
 import android.content.Context
 import androidx.room.Database
 import androidx.room.Room

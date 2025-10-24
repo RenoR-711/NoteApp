@@ -35,14 +35,15 @@ class HomeFragment : Fragment(R.layout.fragment_home),
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        // Menü einrichten
+// Menü einrichten
         val menuHost: MenuHost = requireActivity()
         menuHost.addMenuProvider(this, viewLifecycleOwner, Lifecycle.State.RESUMED)
 
-        // ViewModel vom MainActivity holen
+// ViewModel vom MainActivity holen
         notesViewModel = (activity as MainActivity).noteViewModel
 
         setupHomeRecyclerView()
+        observeNotes()
 
         // FAB für neue Notiz
         binding.addNoteFab.setOnClickListener {
@@ -65,9 +66,11 @@ class HomeFragment : Fragment(R.layout.fragment_home),
             setHasFixedSize(true)
             adapter = noteAdapter
         }
+    }
 
-        // Observer für Notes
-        notesViewModel.getAllNotes().observe(viewLifecycleOwner) { notes ->
+    // Observer für Notes
+    private fun observeNotes() {
+        notesViewModel.allNotes.observe(viewLifecycleOwner) { notes ->
             noteAdapter.differ.submitList(notes)
             updateUI(notes)
         }

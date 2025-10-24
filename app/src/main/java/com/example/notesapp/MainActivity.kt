@@ -2,8 +2,7 @@ package com.example.notesapp
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import com.example.notesapp.database.NoteDatabase
-import com.example.notesapp.repository.NoteRepository
+import androidx.navigation.fragment.NavHostFragment
 import com.example.notesapp.viewmodel.NoteViewModel
 
 class MainActivity : AppCompatActivity() {

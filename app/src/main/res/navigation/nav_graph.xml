@@ -1,4 +1,3 @@
-<?xml version="1.0" encoding="utf-8"?>
 <navigation
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -10,9 +9,21 @@
         android:name="com.example.notesapp.fragments.HomeFragment"
         android:label="Home"
         tools:layout="@layout/fragment_home">
+
+        <!-- Action zu AddNoteFragment -->
         <action
             android:id="@+id/action_homeFragment_to_addNoteFragment"
             app:destination="@id/addNoteFragment" />
+
+        <!-- Action zu UpdateNoteFragment -->
+        <action
+            android:id="@+id/action_homeFragment_to_updateNoteFragment"
+            app:destination="@id/updateNoteFragment">
+            <argument
+                android:name="note"
+                app:argType="com.example.notesapp.model.Note" />
+        </action>
+
     </fragment>
 
     <fragment
@@ -29,11 +40,9 @@
         android:id="@+id/updateNoteFragment"
         android:name="com.example.notesapp.fragments.UpdateNoteFragment"
         android:label="Update Note">
-
         <argument
             android:name="note"
             app:argType="com.example.notesapp.model.Note" />
     </fragment>
-
 
 </navigation>
