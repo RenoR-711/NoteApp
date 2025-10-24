@@ -1,7 +1,7 @@
 plugins {
     alias(libs.plugins.androidApplication)
     alias(libs.plugins.jetbrainsKotlinAndroid)
-    alias(libs.plugins.kotlinParcelize)
+//    alias(libs.plugins.kotlinParcelize)
     alias(libs.plugins.ksp)
     alias(libs.plugins.navigationSafeArgs)
 }
@@ -13,7 +13,7 @@ android {
     defaultConfig {
         applicationId = "com.example.notesapp"
         minSdk = 23
-        targetSdk = 36
+        targetSdk = 34
         versionCode = 1
         versionName = "1.0"
 
@@ -50,7 +50,7 @@ dependencies {
     implementation(libs.androidx.appcompat)
     implementation(libs.material)
     implementation(libs.androidx.activity)
-    implementation(libs.androidx.constraintlayout)
+  //  implementation(libs.androidx.constraintlayout)
 
     // Room
     implementation(libs.androidx.room.runtime)
@@ -71,5 +71,5 @@ dependencies {
     // Tests
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
-    androidTestImplementation(libs.espresso.core)
+  //  androidTestImplementation(libs.espresso.core)
 }

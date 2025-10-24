@@ -10,4 +10,5 @@
     <string name="enter_the_description1">Enter the description</string>
     <string name="note_title">Note title</string>
     <string name="description">description</string>
+    <string name="loading_text">Loading...</string>
 </resources>

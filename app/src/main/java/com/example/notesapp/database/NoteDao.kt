@@ -1,5 +1,6 @@
 package com.example.notesapp.database
 
+import androidx.lifecycle.LiveData
 import androidx.room.*
 import com.example.notesapp.model.Note
 import kotlinx.coroutines.flow.Flow
@@ -7,7 +8,11 @@ import kotlinx.coroutines.flow.Flow
 @Dao
 interface NoteDao {
 
-    @Insert
+
+    @Query("SELECT * FROM note ORDER BY id DESC")
+    fun getAllNotes(): LiveData<List<Note>>
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertNote(note: Note)
 
     @Update
@@ -16,9 +21,7 @@ interface NoteDao {
     @Delete
     suspend fun deleteNote(note: Note)
 
-    @Query("SELECT * FROM note ORDER BY id DESC")
-    fun getAllNotes(): Flow<List<Note>>
-
-    @Query("SELECT * FROM note WHERE title LIKE :query OR content LIKE :query")
-    fun searchNotes(query: String?): Flow<List<Note>>
+    // 🔍 Suche nach Titel oder Inhalt
+    @Query("SELECT * FROM note WHERE noteTitle LIKE :query OR noteDesc LIKE :query ORDER BY id DESC")
+    fun searchNotes(query: String): LiveData<List<Note>>
 }

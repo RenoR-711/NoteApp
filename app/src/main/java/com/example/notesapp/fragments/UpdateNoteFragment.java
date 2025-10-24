@@ -7,25 +7,25 @@ import androidx.core.view.MenuHost
 import androidx.core.view.MenuProvider
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.lifecycleScope
-import androidx.navigation.findNavController
 import com.example.notesapp.MainActivity
 import com.example.notesapp.R
 import com.example.notesapp.databinding.FragmentAddNoteBinding
 import com.example.notesapp.model.Note
 import com.example.notesapp.viewmodel.NoteViewModel
-import kotlinx.coroutines.launch
 
-class AddNoteFragment : Fragment(R.layout.fragment_add_note), MenuProvider {
+
+class UpdateNoteFragment : Fragment(R.layout.fragment_add_note), MenuProvider {
 
     private var _binding: FragmentAddNoteBinding? = null
     private val binding get() = _binding!!
 
-    private lateinit var notesViewModel: NoteViewModel
+    private lateinit var noteViewModel: NoteViewModel
+    private val args: UpdateNoteFragmentArgs by navArgs()
+    private lateinit var currentNote: Note
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
+            inflater: LayoutInflater, container: ViewGroup?,
+            savedInstanceState: Bundle?
     ): View {
         _binding = FragmentAddNoteBinding.inflate(inflater, container, false)
         return binding.root
@@ -34,46 +34,49 @@ class AddNoteFragment : Fragment(R.layout.fragment_add_note), MenuProvider {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        // MenuHost einrichten, damit Fragment Menüs bereitstellen kann
+        noteViewModel = (activity as MainActivity).noteViewModel
+
+        // Menü einrichten
         val menuHost: MenuHost = requireActivity()
         menuHost.addMenuProvider(this, viewLifecycleOwner, Lifecycle.State.RESUMED)
 
-        // ViewModel vom MainActivity holen
-        notesViewModel = (activity as MainActivity).noteViewModel
+        // Note aus den Safe Args laden
+        currentNote = args.note
+        binding.addNoteTitle.setText(currentNote.noteTitle)
+        binding.addNoteDesc.setText(currentNote.noteDesc)
     }
 
-    private fun saveNote() {
-        val noteTitle = binding.addNoteTitle.text.toString().trim()
-        val noteContent = binding.addNoteDesc.toString().trim()
+    private fun updateNote() {
+        val updatedTitle = binding.addNoteTitle.text.toString().trim()
+        val updatedDesc = binding.addNoteDesc.text.toString().trim()
 
-        if (noteTitle.isEmpty() || noteContent.isEmpty()) {
+        if (updatedTitle.isEmpty() || updatedDesc.isEmpty()) {
             Toast.makeText(requireContext(), "Please fill in all fields", Toast.LENGTH_SHORT).show()
             return
         }
 
-        val note = Note(
-            noteTitle = noteTitle,
-            noteDesc = noteContent
+        val updatedNote = currentNote.copy(
+                noteTitle = updatedTitle,
+                noteDesc = updatedDesc
         )
 
-        // suspend-safe Aufruf in Coroutine
         viewLifecycleOwner.lifecycleScope.launch {
-            notesViewModel.insert(note)
-            Toast.makeText(requireContext(), "Note saved!", Toast.LENGTH_SHORT).show()
-            binding.root.findNavController().navigate(R.id.action_addNoteFragment_to_homeFragment)
+            noteViewModel.update(updatedNote)
+            Toast.makeText(requireContext(), "Note updated!", Toast.LENGTH_SHORT).show()
+            findNavController().navigate(R.id.action_updateNoteFragment_to_homeFragment)
         }
     }
 
     // Menü erstellen
     override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
-        menuInflater.inflate(R.menu.menu_add_note, menu)
+        menuInflater.inflate(R.menu.menu_add_note, menu) // kann gleiche Menü-Datei wie AddNoteFragment sein
     }
 
     // Menü-Item klicken
-    override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
+    override fun onMenuItemSelected(menuItem:MenuItem): Boolean {
         return when (menuItem.itemId) {
             R.id.saveMenu -> {
-                saveNote()
+                updateNote()
                 true
             }
             else -> false

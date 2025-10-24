@@ -2,6 +2,7 @@ package com.example.notesapp.repository
 
 import com.example.notesapp.database.NoteDatabase
 import com.example.notesapp.model.Note
+import kotlinx.coroutines.flow.Flow
 
 
 /**
@@ -9,16 +10,17 @@ import com.example.notesapp.model.Note
  * Vermittelt zwischen ViewModel und Room-Datenbank.
  * Kapselt Datenzugriffe und sorgt für klare Trennung von UI-Logik.
  */
-class NoteRepository(db: NoteDatabase) {
+class NoteRepository(private val db: NoteDatabase) {
 
-    private val noteDao = db.getNoteDao()
+    fun getAllNotes() = db.getNoteDao().getAllNotes()
 
     // --- CRUD ---
-    suspend fun insertNote(note: Note) = noteDao.insertNote(note)
-    suspend fun deleteNote(note: Note) = noteDao.deleteNote(note)
-    suspend fun updateNote(note: Note) = noteDao.updateNote(note)
+    suspend fun insertNote(note: Note) = db.getNoteDao().insertNote(note)
 
-    // --- Leseoperationen ---
-    fun getAllNotes() = noteDao.getAllNotes()
-    fun searchNotes(query: String?) = noteDao.searchNotes(query)
+    suspend fun updateNote(note: Note) = db.getNoteDao().updateNote(note)
+
+    suspend fun deleteNote(note: Note) = db.getNoteDao().deleteNote(note)
+
+    // --- Leseoperationen, Queries --
+    fun searchNotes(query: String) = db.getNoteDao().searchNotes(query)
 }

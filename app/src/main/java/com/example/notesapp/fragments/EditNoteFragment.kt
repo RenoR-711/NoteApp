@@ -45,7 +45,7 @@ class EditNoteFragment : Fragment(R.layout.fragment_edit_note), MenuProvider {
         notesViewModel = (activity as MainActivity).noteViewModel
 
         // Note aus den Argumenten holen
-        currentNote = args.note
+        currentNote = args.note!! //<-- sicher non-null
 
         // Felder mit existierenden Werten füllen
         binding.editNoteTitle.setText(currentNote.noteTitle)
@@ -58,7 +58,7 @@ class EditNoteFragment : Fragment(R.layout.fragment_edit_note), MenuProvider {
 
             if (noteTitle.isNotEmpty()) {
                 val updatedNote = Note(currentNote.id, noteTitle, noteDesc)
-                notesViewModel.updateNote(updatedNote)
+                notesViewModel.update(updatedNote)
                 view.findNavController().popBackStack(R.id.homeFragment, false)
             } else {
                 Toast.makeText(requireContext(), "Bitte geben Sie einen Titel ein", Toast.LENGTH_SHORT).show()
@@ -71,7 +71,7 @@ class EditNoteFragment : Fragment(R.layout.fragment_edit_note), MenuProvider {
             .setTitle("Notiz löschen")
             .setMessage("Wollen Sie diese Notiz wirklich löschen?")
             .setPositiveButton("Löschen") { _, _ ->
-                notesViewModel.deleteNote(currentNote)
+                notesViewModel.delete(currentNote)
                 Toast.makeText(requireContext(), "Notiz gelöscht", Toast.LENGTH_SHORT).show()
                 view?.findNavController()?.popBackStack(R.id.homeFragment, false)
             }

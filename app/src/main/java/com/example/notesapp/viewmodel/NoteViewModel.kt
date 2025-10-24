@@ -1,10 +1,12 @@
 package com.example.notesapp.viewmodel
 
-import android.app.Application
-import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.notesapp.model.Note
 import com.example.notesapp.repository.NoteRepository
+import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 
 /**
@@ -12,14 +14,12 @@ import kotlinx.coroutines.launch
  * Vermittelt zwischen UI (Activity/Fragment) und Repository.
  * Führt Datenoperationen in Coroutines aus (asynchron, thread-sicher).
  */
-class NoteViewModel(
-    app: Application,
-    private val repository: NoteRepository
-) : AndroidViewModel(app) {
+class NoteViewModel(private val repository: NoteRepository) : ViewModel() {
+
+    fun getAllNotes() = repository.getAllNotes()
 
     // --- Schreiboperationen (CRUD) ---
-
-    fun addNote(note: Note) = viewModelScope.launch {
+    fun insertNote(note: Note) = viewModelScope.launch {
         repository.insertNote(note)
     }
 
@@ -31,9 +31,5 @@ class NoteViewModel(
         repository.deleteNote(note)
     }
 
-    // --- Leseoperationen ---
-
-    fun getAllNotes() = repository.getAllNotes()
-
-    fun searchNotes(query: String?) = repository.searchNotes(query)
+    fun searchNote(query: String) = repository.searchNotes(query)
 }

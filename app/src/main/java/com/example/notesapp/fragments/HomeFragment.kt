@@ -39,10 +39,13 @@ class HomeFragment : Fragment(R.layout.fragment_home),
         val menuHost: MenuHost = requireActivity()
         menuHost.addMenuProvider(this, viewLifecycleOwner, Lifecycle.State.RESUMED)
 
+        // ViewModel vom MainActivity holen
         notesViewModel = (activity as MainActivity).noteViewModel
 
         setupHomeRecyclerView()
+        observeNotes()
 
+        // FAB für neue Notiz
         binding.addNoteFab.setOnClickListener {
             it.findNavController().navigate(R.id.action_homeFragment_to_addNoteFragment)
         }
@@ -59,14 +62,23 @@ class HomeFragment : Fragment(R.layout.fragment_home),
     }
 
     private fun setupHomeRecyclerView() {
-        noteAdapter = NoteAdapter()
+        // Adapter mit ClickListener
+        noteAdapter = NoteAdapter { selectedNote ->
+            // Navigation zu UpdateNoteFragment mit Safe Args
+            val action = HomeFragmentDirections
+                .actionHomeFragmentToUpdateNoteFragment(selectedNote)
+            binding.root.findNavController().navigate(action)
+        }
+
         binding.homeRecyclerView.apply {
             layoutManager = StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
             setHasFixedSize(true)
             adapter = noteAdapter
         }
+    }
 
-        notesViewModel.getAllNotes().observe(viewLifecycleOwner) { notes ->
+    private fun observeNotes() {
+        notesViewModel.allNotes.observe(viewLifecycleOwner) { notes ->
             noteAdapter.differ.submitList(notes)
             updateUI(notes)
         }

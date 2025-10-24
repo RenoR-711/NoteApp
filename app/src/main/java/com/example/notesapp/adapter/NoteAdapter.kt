@@ -10,41 +10,41 @@ import com.example.notesapp.databinding.NoteLayoutBinding
 import com.example.notesapp.fragments.HomeFragmentDirections
 import com.example.notesapp.model.Note
 
-class NoteAdapter : RecyclerView.Adapter<NoteAdapter.NoteViewHolder>() {
+class NoteAdapter(
+    private val onItemClick: (Note) -> Unit
+) : RecyclerView.Adapter<NoteAdapter.NoteViewHolder>() {
 
-    inner class NoteViewHolder(val binding: NoteLayoutBinding) : RecyclerView.ViewHolder(binding.root)
+    private val notes = List<Note>()
 
-    private val differCallback = object : DiffUtil.ItemCallback<Note>() {
-        override fun areItemsTheSame(oldItem: Note, newItem: Note): Boolean {
-            // Nur die ID reicht aus, um festzustellen ob es das gleiche Item ist
-            return oldItem.id == newItem.id
-        }
+    inner class NoteViewHolder(val binding: ItemNoteBinding) : RecyclerView.ViewHolder(binding.root) {
+        fun bind(note: Note) {
+            binding.titleText.text = note.noteTitle
+            binding.descText.text = note.noteDesc
 
-        override fun areContentsTheSame(oldItem: Note, newItem: Note): Boolean {
-            // Inhaltliche Gleichheit prüfen
-            return oldItem == newItem
+            binding.root.setOnClickListener {
+                onItemClick(note) // klick Event weitergeben
+            }
         }
     }
 
-    val differ = AsyncListDiffer(this, differCallback)
-
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): NoteViewHolder {
-        val binding = NoteLayoutBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        val binding = ItemNoteBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return NoteViewHolder(binding)
     }
 
-    override fun getItemCount() = differ.currentList.size
-
     override fun onBindViewHolder(holder: NoteViewHolder, position: Int) {
-        val note = differ.currentList[position]
+        val currentNote = notes[position]
+        holder.binding.noteTitle.text = currentNote.noteTitle
+        holder.binding.noteDesc.text = currentNote.noteDesc
+    }
 
-        holder.binding.noteTitle.text = note.noteTitle
-        holder.binding.noteDesc.text = note.noteDesc
+    override fun getItemCount() = notes.size
 
-        holder.itemView.setOnClickListener {
-            // Navigation mit SafeArgs: Übergabe des Note-Objekts
-            val direction = HomeFragmentDirections.actionHomeFragmentToEditNoteFragment(note)
-            it.findNavController().navigate(direction)
-        }
+    fun setNotes(list: List<Note>) {
+        notes.clear()
+        notes.addAll(list)
+        notifyDataSetChanged()
     }
 }
+
+annotation class ItemNoteBinding

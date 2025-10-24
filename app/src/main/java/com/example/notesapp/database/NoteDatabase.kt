@@ -6,25 +6,32 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 import com.example.notesapp.model.Note
 
+// Room-Datenbank für Notizen
 @Database(entities = [Note::class], version = 1, exportSchema = false)
 abstract class NoteDatabase : RoomDatabase() {
 
+    // DAO bereitstellen
     abstract fun getNoteDao(): NoteDao
 
     companion object {
         @Volatile
         private var INSTANCE: NoteDatabase? = null
+        private val LOCK = Any() // Lock-Objekt für Thread-Sicherheit
 
-        fun getDatabase(context: Context): NoteDatabase =
-            INSTANCE ?: synchronized(this) {
-                INSTANCE ?: buildDatabase(context).also { INSTANCE = it }
+        // Singleton-Zugriff auf die Datenbank
+        fun getInstance(context: Context): NoteDatabase =
+            INSTANCE ?: synchronized(LOCK) {
+                INSTANCE ?: createDatabase(context).also { INSTANCE = it }
             }
 
-        private fun buildDatabase(context: Context) =
+        // Datenbank erstellen
+        private fun createDatabase(context: Context) =
             Room.databaseBuilder(
                 context.applicationContext,
                 NoteDatabase::class.java,
-                "note_database"
-            ).build()
+                "note_db"
+            )
+                .fallbackToDestructiveMigration(false) // Falls Schema sich ändert
+                .build()
     }
 }
