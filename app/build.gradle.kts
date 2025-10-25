@@ -8,7 +8,7 @@ plugins {
 
 android {
     namespace = "com.example.notesapp"
-    compileSdk = 36
+    compileSdk = 35
 
     defaultConfig {
         applicationId = "com.example.notesapp"
@@ -50,7 +50,7 @@ dependencies {
     implementation(libs.androidx.appcompat)
     implementation(libs.material)
     implementation(libs.androidx.activity)
-  //  implementation(libs.androidx.constraintlayout)
+    implementation(libs.androidx.constraintlayout)
 
     // Room
     implementation(libs.androidx.room.runtime)
@@ -71,5 +71,4 @@ dependencies {
     // Tests
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
-  //  androidTestImplementation(libs.espresso.core)
 }
