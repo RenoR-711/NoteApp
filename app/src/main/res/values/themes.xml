@@ -20,5 +20,6 @@
         <item name="windowSplashScreenBackground">@color/stone</item>
         <item name="windowSplashScreenAnimatedIcon">@drawable/emptybkg</item>
         <item name="postSplashScreenTheme">@style/Theme.NotesApp</item>
+        <item name="windowSplashScreenAnimationDuration">600</item> <!-- Animation Start -->
     </style>
 </resources>
