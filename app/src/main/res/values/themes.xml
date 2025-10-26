@@ -16,4 +16,9 @@
         <!-- Customize your theme here. -->
 
     </style>
+    <style name="Theme.NotesApp.Splash" parent="Theme.SplashScreen">
+        <item name="windowSplashScreenBackground">@color/stone</item>
+        <item name="windowSplashScreenAnimatedIcon">@drawable/emptybkg</item>
+        <item name="postSplashScreenTheme">@style/Theme.NotesApp</item>
+    </style>
 </resources>
