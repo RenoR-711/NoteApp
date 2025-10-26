@@ -26,7 +26,8 @@ class NoteRepository(private val noteDao: NoteDao) {
     }
 
     // --- Leseoperationen, Queries --
-    fun searchNote(query: String): LiveData<List<Note>> {
-        return noteDao.searchNote(query)
+    fun searchNotes(query: String): LiveData<List<Note>> {
+        val q = "%$query%"
+        return noteDao.searchNotes(q)
     }
 }

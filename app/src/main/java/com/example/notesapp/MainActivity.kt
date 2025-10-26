@@ -1,10 +1,8 @@
 package com.example.notesapp
 
 import android.os.Bundle
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.ViewModelProvider
-import androidx.navigation.NavController
-import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupActionBarWithNavController
 import com.example.notesapp.database.NoteDatabase
@@ -14,27 +12,30 @@ import com.example.notesapp.viewmodel.NoteViewModelFactory
 
 class MainActivity : AppCompatActivity() {
 
-    lateinit var noteViewModel: NoteViewModel
-    private lateinit var navController: NavController // NavController als Klassenvariable
+    // Activity-scoped ViewModel, Factory wird hier bereitgestellt
+    // --- ViewModel initialisieren ---
+    val noteViewModel: NoteViewModel by viewModels {
+        val dao = NoteDatabase.getDatabase(this).noteDao()
+        val repository = NoteRepository(dao)
+        NoteViewModelFactory(repository)
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
-
-        // --- ViewModel initialisieren ---
-        val dao = NoteDatabase.getDatabase(this).noteDao()
-        val repository = NoteRepository(dao)
-        val factory = NoteViewModelFactory(repository)
-        noteViewModel = ViewModelProvider(this, factory)[NoteViewModel::class.java]
+        setContentView(R.layout.activity_main) // stelle sicher, dass activity_main ein nav_host_fragment enthält
 
         // --- Navigation ActionBar einrichten ---
-        val navHostFragment = supportFragmentManager
-            .findFragmentById(R.id.nav_host_fragment) as NavHostFragment
-            navController = navHostFragment.navController
+        val navHostFragment =
+            supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
+        val navController = navHostFragment.navController
+
+        setupActionBarWithNavController(navController)
     }
 
     override fun onSupportNavigateUp(): Boolean {
-        val navController = findNavController(R.id.nav_host_fragment)
+        val navHostFragment =
+            supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
+        val navController = navHostFragment.navController
         return navController.navigateUp() || super.onSupportNavigateUp()
     }
 }

@@ -8,10 +8,6 @@ import com.example.notesapp.model.NoteRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
-/**
- * ViewModel-Schicht: Vermittelt zwischen UI (Fragment/Activity) und Repository.
- * Führt alle Datenoperationen asynchron mit Coroutines aus.
- */
 class NoteViewModel(private val repository: NoteRepository) : ViewModel() {
 
     // Alle Notizen als LiveData
@@ -19,19 +15,31 @@ class NoteViewModel(private val repository: NoteRepository) : ViewModel() {
 
     // --- CRUD Operationen ---
     fun insert(note: Note) = viewModelScope.launch(Dispatchers.IO) {
-        repository.insert(note)
+        try {
+            repository.insert(note)
+        } catch (e: Exception) {
+            // Optional: Log.e("NoteViewModel", "insert failed", e)
+        }
     }
 
     fun update(note: Note) = viewModelScope.launch(Dispatchers.IO) {
-        repository.update(note)
+        try {
+            repository.update(note)
+        } catch (e: Exception) {
+            // Optional: Log.e("NoteViewModel", "update failed", e)
+        }
     }
 
     fun delete(note: Note) = viewModelScope.launch(Dispatchers.IO) {
-        repository.delete(note)
+        try {
+            repository.delete(note)
+        } catch (e: Exception) {
+            // Optional: Log.e("NoteViewModel", "delete failed", e)
+        }
     }
 
     // Suche nach Notizen
-    fun searchNote(query: String): LiveData<List<Note>> {
-        return repository.searchNote(query)
+    fun searchNotes(query: String): LiveData<List<Note>> {
+        return repository.searchNotes(query)
     }
 }
