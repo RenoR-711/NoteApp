@@ -10,7 +10,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.NotesApp">
 
-        <!-- ✅ SPLASH SCREEN IST LAUNCHER -->
+        <!-- SPLASH SCREEN IST LAUNCHER -->
         <activity
             android:name=".SplashActivity"
             android:exported="true"
@@ -21,7 +21,7 @@
             </intent-filter>
         </activity>
 
-        <!-- ✅ MainActivity NICHT mehr Launcher -->
+        <!-- MainActivity NICHT mehr Launcher -->
         <activity
             android:name=".MainActivity"
             android:exported="true"/>
