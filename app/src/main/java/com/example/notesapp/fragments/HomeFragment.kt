@@ -30,8 +30,11 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
         // Shared ViewModel
         noteViewModel = (requireActivity() as MainActivity).noteViewModel
 
-        // RecyclerView Setup
-        noteAdapter = NoteAdapter()
+// RecyclerView Setup + Navigation on Click
+        noteAdapter = NoteAdapter { note ->
+            val action = HomeFragmentDirections.actionHomeFragmentToUpdateNoteFragment(note)
+            findNavController().navigate(action)
+        }
         binding.homeRecyclerView.layoutManager = LinearLayoutManager(requireContext())
         binding.homeRecyclerView.adapter = noteAdapter
 
