@@ -1,47 +1,69 @@
 [versions]
-agp = "8.11.2"
-kotlin = "2.0.21"
-ksp = "2.0.21-1.0.25"
-coreKtx = "1.15.0"
+# Build-Tooling
+agp = "8.3.2"                # Beachte: AGP 8.9.x verlangt Gradle >= 8.11.1
+kotlin = "2.0.0"              # owngrade auf Kotlin 2.0.0 ist die stabilste und sauberste Lösung, besonders da kein Compose mehr drin hast.
+ksp = "2.0.0-1.0.21"
+desugar_jdk_libs = "2.1.1"
+
+# AndroidX Core & UI (Views)
+coreKtx = "1.12.0"
 appcompat = "1.7.0"
-material = "1.12.0"
-activity = "1.9.2"
+material = "1.12.0"         # MDC (Views)
+
+# Activity / Lifecycle / Navigation
+activity = "1.8.2"
+lifecycle = "2.7.0"        # 2.9.4 ist (noch) nicht gelistet
+navigation = "2.7.7"        # 2.9.5 existiert aktuell nicht als stable
+
+# Layout
 constraintlayout = "2.1.4"
-lifecycle = "2.8.6"
-navigation = "2.8.2"
-androidx-navigation = "2.8.2"
-room = "2.6.1"
-androidx-room = "2.6.1"
-coroutines = "1.8.0"
+
+# Room
+room = "2.6.1"             # Aktuellster stabiler Release-Train
+
+# Test
 junit = "4.13.2"
-androidxJunit = "1.2.1"
-espressoCore = "3.6.1"
+androidxJunit = "1.1.5"
+espressoCore = "3.5.1"
+
+# Sonstiges
+coroutines = "1.7.3"
+
 
 [libraries]
-androidx-core-ktx = { module = "androidx.core:core-ktx", version.ref = "coreKtx" }
-androidx-appcompat = { module = "androidx.appcompat:appcompat", version.ref = "appcompat" }
-material = { module = "com.google.android.material:material", version.ref = "material" }
-androidx-activity = { module = "androidx.activity:activity-ktx", version.ref = "activity" }
-androidx-constraintlayout = { module = "androidx.constraintlayout:constraintlayout", version.ref = "constraintlayout" }
+# --- AndroidX / Core ---
+androidx-core-ktx              = { module = "androidx.core:core-ktx", version.ref = "coreKtx" }
+androidx-appcompat             = { module = "androidx.appcompat:appcompat", version.ref = "appcompat" }
+material                       = { module = "com.google.android.material:material", version.ref = "material" }
+androidx-activity              = { module = "androidx.activity:activity-ktx", version.ref = "activity" }
+androidx-constraintlayout      = { module = "androidx.constraintlayout:constraintlayout", version.ref = "constraintlayout" }
+
+# --- Lifecycle ---
 androidx-lifecycle-viewmodel-ktx = { module = "androidx.lifecycle:lifecycle-viewmodel-ktx", version.ref = "lifecycle" }
-androidx-lifecycle-livedata-ktx = { module = "androidx.lifecycle:lifecycle-livedata-ktx", version.ref = "lifecycle" }
+androidx-lifecycle-livedata-ktx  = { module = "androidx.lifecycle:lifecycle-livedata-ktx",  version.ref = "lifecycle" }
 
-kotlinx-coroutines-android = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-android", version.ref = "coroutines" }
-
-androidx-room-runtime = { module = "androidx.room:room-runtime", version.ref = "room" }
-androidx-room-ktx = { module = "androidx.room:room-ktx", version.ref = "room" }
-androidx-room-compiler = { module = "androidx.room:room-compiler", version.ref = "room" }
-
+# --- Navigation (Fragments / Views) ---
 androidx-navigation-fragment-ktx = { module = "androidx.navigation:navigation-fragment-ktx", version.ref = "navigation" }
-androidx-navigation-ui-ktx = { module = "androidx.navigation:navigation-ui-ktx", version.ref = "navigation" }
+androidx-navigation-ui-ktx       = { module = "androidx.navigation:navigation-ui-ktx",       version.ref = "navigation" }
 
-junit = { module = "junit:junit", version.ref = "junit" }
-androidx-junit = { module = "androidx.test.ext:junit", version.ref = "androidxJunit" }
-espresso-core = { module = "androidx.test.espresso:espresso-core", version.ref = "espressoCore" }
+# --- Desugaring ---
+desugar_jdk_libs               = { module = "com.android.tools:desugar_jdk_libs", version.ref = "desugar_jdk_libs" }
+
+# --- Coroutines ---
+kotlinx-coroutines-android     = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-android", version.ref = "coroutines" }
+
+# --- Room (zu KSP passend verwenden) ---
+androidx-room-runtime          = { module = "androidx.room:room-runtime",  version.ref = "room" }
+androidx-room-ktx              = { module = "androidx.room:room-ktx",      version.ref = "room" }
+androidx-room-compiler         = { module = "androidx.room:room-compiler", version.ref = "room" }  # via ksp{} einbinden
+
+# --- Test ---
+junit                          = { module = "junit:junit",                 version.ref = "junit" }
+androidx-junit                 = { module = "androidx.test.ext:junit",     version.ref = "androidxJunit" }
+espresso-core                  = { module = "androidx.test.espresso:espresso-core", version.ref = "espressoCore" }
 
 [plugins]
-androidApplication = { id = "com.android.application", version.ref = "agp" }
-jetbrainsKotlinAndroid = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
-navigationSafeArgs = { id = "androidx.navigation.safeargs.kotlin", version.ref = "navigation" }
-kotlinParcelize = { id = "kotlin-parcelize" }  # keine Version notwendig
-ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
+androidApplication      = { id = "com.android.application",                version.ref = "agp" }
+jetbrainsKotlinAndroid  = { id = "org.jetbrains.kotlin.android",           version.ref = "kotlin" }
+ksp                     = { id = "com.google.devtools.ksp",                version.ref = "ksp" }
+navigationSafeArgs      = { id = "androidx.navigation.safeargs.kotlin",    version.ref = "navigation" }

@@ -7,6 +7,9 @@ import com.example.notesapp.model.Note
 @Dao
 interface NoteDao {
 
+    @Query("SELECT * FROM notes ORDER BY id DESC")
+    fun getAllNotes(): LiveData<List<Note>>
+
     // --- CRUD Operation ---
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insert(note: Note)
