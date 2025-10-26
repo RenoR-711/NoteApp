@@ -17,11 +17,25 @@
 
     <ImageView
         android:id="@+id/emptyNotesImage"
+        android:layout_width="140dp"
+        android:layout_height="140dp"
+        android:src="@drawable/branding_logo"
+        android:visibility="gone"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"/>
+
+    <TextView
+        android:id="@+id/emptyNotesText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@drawable/emptybkg"
-        android:layout_centerInParent="true"
-        android:visibility="gone" />
+        android:text="@string/noch_keine_notizen_ntippe_auf_um_eine_zu_erstellen"
+        android:textSize="16sp"
+        android:textColor="@android:color/darker_gray"
+        android:gravity="center"
+        android:layout_marginTop="12dp"
+        android:visibility="gone"
+        android:layout_below="@id/emptyNotesImage"
+        android:layout_centerHorizontal="true"/>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/addNoteFab"

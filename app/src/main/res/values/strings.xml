@@ -15,6 +15,7 @@
     <string name="update_note">update_note</string>
     <string name="save_note">save_note</string>
     <string name="delete_note">delete_note</string>
+    <string name="noch_keine_notizen_ntippe_auf_um_eine_zu_erstellen">Noch keine Notizen.\nTippe auf + um eine zu erstellen!</string>
     <!-- Strings used for fragments for navigation -->
 <!--    <string name="first_fragment_label">First Fragment</string>-->
 <!--    <string name="second_fragment_label">Second Fragment</string>-->
