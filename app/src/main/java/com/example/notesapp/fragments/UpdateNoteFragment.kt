@@ -11,6 +11,8 @@ import com.example.notesapp.databinding.FragmentUpdateNoteBinding
 import com.example.notesapp.model.NoteRepository
 import com.example.notesapp.viewmodel.NoteViewModel
 import com.example.notesapp.viewmodel.NoteViewModelFactory
+import androidx.navigation.fragment.navArgs
+import com.example.notesapp.MainActivity
 
 class UpdateNoteFragment : Fragment(R.layout.fragment_update_note) {
 
@@ -18,36 +20,36 @@ class UpdateNoteFragment : Fragment(R.layout.fragment_update_note) {
     private val binding get() = _binding!!
 
     private lateinit var noteViewModel: NoteViewModel
+    private val args: UpdateNoteFragmentArgs by navArgs()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         _binding = FragmentUpdateNoteBinding.bind(view)
 
-        // --- ViewModel ---
-        val dao = NoteDatabase.getDatabase(requireContext()).noteDao()
-        val repository = NoteRepository(dao)
-        val factory = NoteViewModelFactory(repository)
-        noteViewModel = ViewModelProvider(this, factory)[NoteViewModel::class.java]
+        // Get shared ViewModel from Activity-scope
+        noteViewModel = (requireActivity() as MainActivity).noteViewModel
 
-        // --- Alte Note anzeigen ---
-        val note = UpdateNoteFragmentArgs.fromBundle(requireArguments()).note
+        // Show existing note
+        val note = args.note
         binding.updateNoteTitle.setText(note.noteTitle)
         binding.updateNoteDesc.setText(note.noteDesc)
 
-        // --- Update Button ---
+        // Update Button
         binding.updateNoteFab.setOnClickListener {
             val updatedNote = note.copy(
                 noteTitle = binding.updateNoteTitle.text.toString(),
                 noteDesc = binding.updateNoteDesc.text.toString()
             )
             noteViewModel.update(updatedNote)
-            view.findNavController().navigate(R.id.action_updateNoteFragment_to_homeFragment)
+            requireView().findNavController()
+                .navigate(R.id.action_updateNoteFragment_to_homeFragment)
         }
 
-        // --- Delete Button ---
+        // Delete Button
         binding.deleteNoteFab.setOnClickListener {
             noteViewModel.delete(note)
-            view.findNavController().navigate(R.id.action_updateNoteFragment_to_homeFragment)
+            requireView().findNavController()
+                .navigate(R.id.action_updateNoteFragment_to_homeFragment)
         }
     }
 
