@@ -1,6 +1,7 @@
 [versions]
 # Build-Tooling
 agp = "8.3.2"                # Beachte: AGP 8.9.x verlangt Gradle >= 8.11.1
+androidGifDrawable = "1.2.29"
 coreSplashscreen = "1.0.1"
 kotlin = "2.0.0"              # owngrade auf Kotlin 2.0.0 ist die stabilste und sauberste Lösung, besonders da kein Compose mehr drin hast.
 ksp = "2.0.0-1.0.21"
@@ -33,6 +34,7 @@ coroutines = "1.7.3"
 
 [libraries]
 # --- AndroidX / Core ---
+android-gif-drawable = { module = "pl.droidsonroids.gif:android-gif-drawable", version.ref = "androidGifDrawable" }
 androidx-core-ktx              = { module = "androidx.core:core-ktx", version.ref = "coreKtx" }
 androidx-appcompat             = { module = "androidx.appcompat:appcompat", version.ref = "appcompat" }
 androidx-core-splashscreen = { module = "androidx.core:core-splashscreen", version.ref = "coreSplashscreen" }

@@ -1,36 +1,27 @@
 package com.example.notesapp
 
-import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
-import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
-import android.view.animation.AnimationUtils
 import android.widget.ImageView
+import androidx.appcompat.app.AppCompatActivity
+import android.graphics.drawable.AnimationDrawable
+import android.os.Handler
+import android.os.Looper
 
-class SplashActivity : Activity() {
+class SplashActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        // Install Android 12+ Splash API
-        val splashScreen = installSplashScreen()
-
         super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_splash)
 
-        // Set our animated logo overlay
-        setContentView(R.layout.activity_splash) // kommt gleich
+        val imageView = findViewById<ImageView>(R.id.splashIcon)
+        val animation = imageView.drawable as AnimationDrawable
+        animation.start()
 
-        val logo = findViewById<ImageView>(R.id.imageView)
-        val fadeIn = AnimationUtils.loadAnimation(this, R.anim.fade_in)
-
-        logo.startAnimation(fadeIn)
-
-        fadeIn.setAnimationListener(object : android.view.animation.Animation.AnimationListener {
-            override fun onAnimationStart(animation: android.view.animation.Animation?) {}
-            override fun onAnimationRepeat(animation: android.view.animation.Animation?) {}
-
-            override fun onAnimationEnd(animation: android.view.animation.Animation?) {
-                startActivity(Intent(this@SplashActivity, MainActivity::class.java))
-                finish()
-            }
-        })
+        // Animation dauert 71 × 29 ms = 2059 ms
+        Handler(Looper.getMainLooper()).postDelayed({
+            startActivity(Intent(this, MainActivity::class.java))
+            finish()
+        }, 3000)
     }
 }

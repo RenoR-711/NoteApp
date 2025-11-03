@@ -43,6 +43,7 @@ dependencies {
     implementation(libs.androidx.activity)
     implementation(libs.androidx.constraintlayout)
     implementation(libs.androidx.core.splashscreen)
+    implementation(libs.android.gif.drawable)
 
     // Lifecycle (Views)
     implementation(libs.androidx.lifecycle.viewmodel.ktx)

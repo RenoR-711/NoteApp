@@ -16,10 +16,14 @@
         <!-- Customize your theme here. -->
 
     </style>
-    <style name="Theme.NotesApp.Splash" parent="Theme.SplashScreen">
-        <item name="windowSplashScreenBackground">@color/stone</item>
-        <item name="windowSplashScreenAnimatedIcon">@drawable/branding_logo_kopie</item>
-        <item name="postSplashScreenTheme">@style/Theme.NotesApp</item>
-        <item name="windowSplashScreenAnimationDuration">600</item> <!-- Animation Start -->
+    <!-- Theme für SplashActivity -->
+    <style name="Theme.NotesApp.NoActionBar" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+        <!-- Kein ActionBar oder Titel -->
+        <item name="android:windowFullscreen">true</item>
+        <item name="android:windowNoTitle">true</item>
+        <!-- Transparente Statusleiste für Fullscreen-GIF -->
+        <item name="android:statusBarColor">@android:color/transparent</item>
+        <item name="android:navigationBarColor">@android:color/black</item>
+        <item name="android:windowBackground">@color/white</item>
     </style>
 </resources>

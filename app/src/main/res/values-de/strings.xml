@@ -11,4 +11,11 @@
     <string name="note_title">Notiz Überschrift.</string>
     <string name="description">Beschreibung.</string>
     <string name="loading_text">Lädt...</string>
+    <string name="edit_fab">Bearbeiten-Button</string>
+    <string name="update_note">update_note</string>
+    <string name="save_note">Notiz speichern</string>
+    <string name="delete_note">Notiz löschen</string>
+    <string name="noch_keine_notizen_ntippe_auf_um_eine_zu_erstellen">Noch keine Notizen</string>
+    <string name="search">suchen</string>
+    <string name="app_logo_beim_start">App-Logo beim Start</string>
 </resources>

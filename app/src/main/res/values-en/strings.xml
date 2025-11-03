@@ -11,4 +11,11 @@
     <string name="note_title">Note title</string>
     <string name="description">description</string>
     <string name="loading_text">Loading...</string>
+    <string name="edit_fab">edit_fab</string>
+    <string name="update_note">update_note</string>
+    <string name="save_note">save_note</string>
+    <string name="delete_note">delete_note</string>
+    <string name="noch_keine_notizen_ntippe_auf_um_eine_zu_erstellen">no_notes yet, tap_to_create_one</string>
+    <string name="search">Search</string>
+    <string name="app_logo_beim_start">App logo on startup</string>
 </resources>
