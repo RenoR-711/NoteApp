@@ -8,32 +8,32 @@
     android:background="@color/mist"
     tools:context=".SplashActivity">
 
-    <!-- animiertes png -->
+    <!-- Ladeanimation -->
 
-    <!-- Animiertes PNG -->
     <ImageView
-        android:id="@+id/splashIcon"
+        android:id="@+id/splashImage"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="52dp"
         android:adjustViewBounds="true"
         android:contentDescription="@string/app_logo_beim_start"
         android:scaleType="centerInside"
-        android:src="@drawable/splash_animation"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
+        android:src="@drawable/animation"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintVertical_bias="0.3" />
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
-    <!-- Ladeanimation -->
     <ProgressBar
         android:id="@+id/progressBar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="28dp"
         android:indeterminate="true"
-        app:layout_constraintTop_toBottomOf="@id/splashIcon"
-        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/splashImage" />
 
     <TextView
         android:id="@+id/textView"
@@ -41,10 +41,10 @@
         android:layout_height="wrap_content"
         android:text="@string/loading_text"
         android:textColor="@android:color/black"
-        app:layout_constraintTop_toBottomOf="@id/progressBar"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/progressBar"
+        app:layout_constraintVertical_bias="0.171" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

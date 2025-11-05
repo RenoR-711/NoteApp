@@ -12,7 +12,7 @@ android {
 
     defaultConfig {
         applicationId = "com.example.notesapp"
-        minSdk = 24
+        minSdk = 21
         targetSdk = 34
         versionCode = 1
         versionName = "1.0"
@@ -43,7 +43,6 @@ dependencies {
     implementation(libs.androidx.activity)
     implementation(libs.androidx.constraintlayout)
     implementation(libs.androidx.core.splashscreen)
-    implementation(libs.android.gif.drawable)
 
     // Lifecycle (Views)
     implementation(libs.androidx.lifecycle.viewmodel.ktx)
